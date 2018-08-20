@@ -18,6 +18,8 @@ class SectorFive < Gosu::Window
     @scene = :start
     @enemies_appeared = 0
     @enemies_destroyed = 0
+    @start_music = Gosu::Song.new('sounds/heartstarers1.wav')
+    @start_music.play(true)
   end
 
   def draw
@@ -61,6 +63,10 @@ class SectorFive < Gosu::Window
     @scene = :game
     @enemies_appeared = 0
     @enemies_destroyed = 0
+    @start_music = Gosu::Song.new('sounds/heartstarers1.wav')
+    @start_music.play(true)
+    @explosion_sound = Gosu::Sample.new('sounds/20511324_gun_by_ane_novak_preview.wav')
+    @shooting_sound = Gosu::Sample.new('sounds/20511324_gun_by_ane_novak_preview.wav')
   end
 
   def button_down_start(id)
@@ -90,6 +96,7 @@ class SectorFive < Gosu::Window
     if id == Gosu::KbSpace
       @bullets.push Bullet.new(self,  @player.x, @player.y, @player.angle)
     end
+    @shooting_sound.play(0.3)
   end
 
   def update_game
@@ -119,6 +126,7 @@ class SectorFive < Gosu::Window
           @bullets.delete bullet
           @explosions.push Explosion.new(self, enemy.x, enemy.y)
           @enemies_destroyed += 1
+          @explosion_sound.play
         end
       end
     end
@@ -158,6 +166,9 @@ class SectorFive < Gosu::Window
       @message = "You got too close to the enemy mother ship."
       @message2 = "Before your ship was destroyed, "
       @message2 += "you took out #{@enemies_destroyed} enemy ships."
+
+    @start_music = Gosu::Song.new('sounds/heartstarers1.wav')
+    @start_music.play(true)
     end
 
     @bottom_message = "Press P to play again, or Q to quit."
